@@ -41,7 +41,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 
 register_tortoise(
     app=app,
-    db_url="postgres://postgres:task.db",
+    db_url="sqlite://task.db",
     add_exception_handlers=True,
     generate_schemas=True,
     modules={"models": ["api.models.models"]},
