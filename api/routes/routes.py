@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
-from api.models.models import Task
+from fastapi import APIRouter, Depends, HTTPException, status
+from api.models.models import Task, User
 from api.schemas.schemas import GetTask, PostTask, PutTask
+from auth.auth import get_current_user
 
 task_router = APIRouter(prefix="/api", tags=["Tasks"])
 
@@ -9,9 +10,9 @@ async def all_tasks():
     data = Task.all()
     return await GetTask.from_queryset(data)
 
-@task_router.post("/")
-async def post_task(body: PostTask):
-    row = await Task.create(**body.dict(exclude_unset=True))
+@task_router.post("/", response_model=GetTask)
+async def post_task(body: PostTask, user: User = Depends(get_current_user)):
+    row = await Task.create(**body.dict(exclude_unset=True), user=user)
     return await GetTask.from_tortoise_orm(row)
     
 

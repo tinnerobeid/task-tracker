@@ -5,7 +5,7 @@ from tortoise.contrib.fastapi import register_tortoise
 from api.models.models import User
 from auth.auth import get_current_user
 from auth.auth_util import create_access_token, get_password_hash, verify_password
-from data import user_db
+from data.data import user_db
 
 app = FastAPI()
 app.include_router(task_router)
